@@ -1,0 +1,13 @@
+001 - Adopcion de Arquitectura Hexagonal en el microservicio de catalogo
+
+El microservicio service-catalog necesita gestionar reglas de negocio claras para profesionales, categorias y agendas, manteniendose desacoplado de las tecnologias externas (PostgreSQL, APIs REST, mensajeria futura).
+
+Decision:
+
+Se adopta el patron de Arquitectura Hexagonal (Ports and Adapters).
+    domain/model contendra unicamente POJOs de negocio sin anotaciones de persistencia ni dependencias de frameworks.
+    domain/port definira las interfaces de entrada (casos de uso) y de salida (repositorios).
+    infrastructure/adapter contendra las implementaciones concretas (Spring MVC, Spring Data JPA).
+
+Consecuencias:
+    Alto desacoplamiento, facilidad para probar la logica de negocio en aislamiento y flexibilidad para cambiar motores de base de datos o frameworks sin alterar el core del negocio.
