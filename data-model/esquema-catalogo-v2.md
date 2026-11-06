@@ -61,3 +61,9 @@ erDiagram
 - Los timestamps vienen de la cátedra, sin valor por defecto.
 - El snapshot reemplaza toda la copia en una transacción; el incremental hace upsert por versión.
 - `last_error` está reservado para registrar fallos de sincronización (se completa con la reconciliación periódica).
+
+## Usuarios (migración V4)
+- `users`: id (generado por la base), login y email únicos (uk_users_login y uk_users_email), password_hash, first_name, last_name, image_url, activated, lang_key y auditoría.
+- `authorities`: ROLE_USER y ROLE_ADMIN.
+- `user_authorities`: relación usuario - autoridad (clave foránea con ON DELETE CASCADE hacia users).
+  El id del usuario es generado por la base, a diferencia de las tablas del catálogo, cuyos ids son los de la cátedra.
