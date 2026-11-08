@@ -3,7 +3,7 @@
 Objetivo: tener **service-catalog** y **service-turns** funcionando para regularizar (límite: 30/11/2026).
 La app KMP Android no es requerida para regularizar: se desarrolla para el examen final.
 
-Última actualización: 04/11/2026
+Última actualización: 08/11/2026
 
 ## Calendario
 
@@ -36,7 +36,7 @@ La app KMP Android no es requerida para regularizar: se desarrolla para el exame
 - [x] Consumidor Kafka y sincronización incremental con idempotencia
 - [x] Reconciliación al arrancar y periódica
 - [x] Usuarios finales, autenticación y JWT
-- [ ] API de consulta y filtros locales
+- [x] API de consulta y filtros locales
 - [ ] Empaquetado (Dockerfile) y README
 
 ## service-turns
