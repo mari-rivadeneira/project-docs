@@ -1,0 +1,1945 @@
+{
+	"info": {
+		"_postman_id": "934c55df-001c-4ac9-820a-077674a26287",
+		"name": "service-catalog",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "43585943",
+		"_collection_link": "https://marina-9564674.postman.co/workspace/marina's-Workspace~baa77a2e-c3c2-4333-8017-222f4dc09844/collection/43585943-934c55df-001c-4ac9-820a-077674a26287?action=share&source=collection_link&creator=43585943"
+	},
+	"item": [
+		{
+			"name": "1. Usuarios",
+			"item": [
+				{
+					"name": "1.1 Registro",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.collectionVariables.set(\"login\", \"prueba\" + Date.now());"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"201 Created\", () => pm.response.to.have.status(201));"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"login\": \"{{login}}\", \"password\": \"{{password}}\", \"email\": \"{{login}}@example.com\", \"firstName\": \"Marina\", \"lastName\": \"Rivadeneira\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/register",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "1.2 Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"200 con id_token\", () => {",
+									"    pm.response.to.have.status(200);",
+									"    pm.expect(pm.response.json().id_token).to.be.a(\"string\");",
+									"});",
+									"pm.collectionVariables.set(\"token\", pm.response.json().id_token);"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"username\": \"{{login}}\", \"password\": \"{{password}}\", \"rememberMe\": false}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/authenticate",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"authenticate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "1.3 Login con el email",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"username\": \"{{login}}@example.com\",\n  \"password\": \"{{password}}\",\n  \"rememberMe\": false\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/authenticate",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"authenticate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "1.4 Mi cuenta",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"200 y sin contraseña\", () => {",
+									"    pm.response.to.have.status(200);",
+									"    pm.expect(pm.response.text()).to.not.include(\"password\");",
+									"    pm.expect(pm.response.text()).to.not.include(\"argon2\");",
+									"    pm.expect(pm.response.json().authorities).to.include(\"ROLE_USER\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"id\": 12, \"login\": \"prueba1731...\", \"firstName\": \"Marina\", \"lastName\": \"Rivadeneira\",\n \"email\": \"prueba1731...@example.com\", \"imageUrl\": null, \"activated\": true, \"langKey\": \"es\",\n \"authorities\": [\"ROLE_USER\"], \"createdBy\": \"system\", \"createdDate\": \"2026-11-10T...\", ...}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/account",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"account"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "2. Catálogo",
+			"item": [
+				{
+					"name": "2.1 Estado de sincronización",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/catalog/sync/status",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"catalog",
+								"sync",
+								"status"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2.2 Categorías",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"200 y lista\", () => {",
+									"    pm.response.to.have.status(200);",
+									"    pm.expect(pm.response.json()).to.be.an(\"array\");",
+									"});",
+									"pm.collectionVariables.set(\"categoryId\", pm.response.json()[0].id);"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/catalog/categories",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"catalog",
+								"categories"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2.3 Profesionales sin filtros",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"200 y página\", () => {",
+									"    pm.response.to.have.status(200);",
+									"    const body = pm.response.json();",
+									"    pm.expect(body.content).to.be.an(\"array\");",
+									"    pm.expect(body.totalElements).to.be.at.least(1);",
+									"});",
+									"const first = pm.response.json().content[0];",
+									"pm.collectionVariables.set(\"professionalId\", first.id);",
+									"pm.collectionVariables.set(\"searchName\", first.firstName.substring(0, 3));"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/catalog/professionals",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"catalog",
+								"professionals"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2.4 Por categoría",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"todos de la categoría\", () => {",
+									"    pm.response.to.have.status(200);",
+									"    const id = Number(pm.collectionVariables.get(\"categoryId\"));",
+									"    pm.response.json().content.forEach(p => pm.expect(p.categoryId).to.eql(id));",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/catalog/professionals?categoryId=103",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"catalog",
+								"professionals"
+							],
+							"query": [
+								{
+									"key": "categoryId",
+									"value": "103"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2.5 Por nombre",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"el texto está en el nombre o apellido\", () => {",
+									"    pm.response.to.have.status(200);",
+									"    const text = pm.collectionVariables.get(\"searchName\").toLowerCase();",
+									"    const content = pm.response.json().content;",
+									"    pm.expect(content.length).to.be.at.least(1);",
+									"    content.forEach(p => pm.expect((p.firstName + \" \" + p.lastName).toLowerCase()).to.include(text));",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/catalog/professionals?name={{searchName}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"catalog",
+								"professionals"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "{{searchName}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2.6 Solo habilitados",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"todos habilitados\", () => {",
+									"    pm.response.to.have.status(200);",
+									"    pm.response.json().content.forEach(p => pm.expect(p.enabled).to.eql(true));",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/catalog/professionals?enabled=true",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"catalog",
+								"professionals"
+							],
+							"query": [
+								{
+									"key": "enabled",
+									"value": "true"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2.7 Solo deshabilitados",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"todos habilitados\", () => {",
+									"    pm.response.to.have.status(200);",
+									"    pm.response.json().content.forEach(p => pm.expect(p.enabled).to.eql(false));",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/catalog/professionals?enabled=false",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"catalog",
+								"professionals"
+							],
+							"query": [
+								{
+									"key": "enabled",
+									"value": "false"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2.8 Con agenda",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/catalog/professionals?hasSchedules=true",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"catalog",
+								"professionals"
+							],
+							"query": [
+								{
+									"key": "hasSchedules",
+									"value": "true"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2.9 Sin agenda",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/catalog/professionals?hasSchedules=false",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"catalog",
+								"professionals"
+							],
+							"query": [
+								{
+									"key": "hasSchedules",
+									"value": "false"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2.10 Por dia",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"200\", () => pm.response.to.have.status(200));",
+									"const content = pm.response.json().content;",
+									"if (content.length > 0) {",
+									"    pm.collectionVariables.set(\"mondayProfessionalId\", content[0].id);",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/catalog/professionals?dayOfWeek=monday",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"catalog",
+								"professionals"
+							],
+							"query": [
+								{
+									"key": "dayOfWeek",
+									"value": "monday"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2.11 Combinados",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"máximo 5, todos habilitados\", () => {",
+									"    pm.response.to.have.status(200);",
+									"    const content = pm.response.json().content;",
+									"    pm.expect(content.length).to.be.at.most(5);",
+									"    content.forEach(p => pm.expect(p.enabled).to.eql(true));",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/catalog/professionals?enabled=true&hasSchedules=true&dayOfWeek=monday&size=5",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"catalog",
+								"professionals"
+							],
+							"query": [
+								{
+									"key": "enabled",
+									"value": "true"
+								},
+								{
+									"key": "hasSchedules",
+									"value": "true"
+								},
+								{
+									"key": "dayOfWeek",
+									"value": "monday"
+								},
+								{
+									"key": "size",
+									"value": "5"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2.12 Pagina 0",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"paginación\", () => {",
+									"    pm.response.to.have.status(200);",
+									"    const body = pm.response.json();",
+									"    pm.expect(body.page).to.eql(0);",
+									"    pm.expect(body.size).to.eql(5);",
+									"    pm.expect(body.content.length).to.be.at.most(5);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/catalog/professionals?size=5&page=0",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"catalog",
+								"professionals"
+							],
+							"query": [
+								{
+									"key": "size",
+									"value": "5"
+								},
+								{
+									"key": "page",
+									"value": "0"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2.13 Pagina 1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"paginación\", () => {",
+									"    pm.response.to.have.status(200);",
+									"    const body = pm.response.json();",
+									"    pm.expect(body.page).to.eql(1);",
+									"    pm.expect(body.size).to.eql(5);",
+									"    pm.expect(body.content.length).to.be.at.most(5);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/catalog/professionals?size=5&page=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"catalog",
+								"professionals"
+							],
+							"query": [
+								{
+									"key": "size",
+									"value": "5"
+								},
+								{
+									"key": "page",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2.14 Profesional por id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"el profesional pedido\", () => {",
+									"    pm.response.to.have.status(200);",
+									"    pm.expect(pm.response.json().id).to.eql(Number(pm.collectionVariables.get(\"professionalId\")));",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/catalog/professionals/{{professionalId}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"catalog",
+								"professionals",
+								"{{professionalId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2.15 Agendas del profesional",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"lista ordenada por día y hora\", () => {",
+									"    pm.response.to.have.status(200);",
+									"    const order = [\"MONDAY\",\"TUESDAY\",\"WEDNESDAY\",\"THURSDAY\",\"FRIDAY\",\"SATURDAY\",\"SUNDAY\"];",
+									"    const list = pm.response.json();",
+									"    for (let i = 1; i < list.length; i++) {",
+									"        const a = order.indexOf(list[i-1].dayOfWeek), b = order.indexOf(list[i].dayOfWeek);",
+									"        pm.expect(a).to.be.at.most(b);",
+									"        if (a === b) pm.expect(list[i-1].startTime <= list[i].startTime).to.eql(true);",
+									"    }",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/catalog/professionals/{{professionalId}}/schedules",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"catalog",
+								"professionals",
+								"{{professionalId}}",
+								"schedules"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2.16 Agendas de un profesional del lunes",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"tiene una agenda habilitada el lunes\", () => {",
+									"    pm.response.to.have.status(200);",
+									"    pm.expect(pm.response.json().some(s => s.dayOfWeek === \"MONDAY\" && s.enabled === true)).to.eql(true);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/catalog/professionals/{{mondayProfessionalId}}/schedules",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"catalog",
+								"professionals",
+								"{{mondayProfessionalId}}",
+								"schedules"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "3. Seguridad",
+			"item": [
+				{
+					"name": "3.1 Cuenta sin token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"  pm.test(\"401 UNAUTHORIZED en problem+json\", () => {",
+									"      pm.response.to.have.status(401);",
+									"      pm.expect(pm.response.json().code).to.eql(\"UNAUTHORIZED\");",
+									"      pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/problem+json\");",
+									"      pm.expect(pm.response.headers.get(\"WWW-Authenticate\")).to.eql(\"Bearer\");",
+									"  });"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/account",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"account"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "3.2 Catalogo sin token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"  pm.test(\"401 UNAUTHORIZED en problem+json\", () => {",
+									"      pm.response.to.have.status(401);",
+									"      pm.expect(pm.response.json().code).to.eql(\"UNAUTHORIZED\");",
+									"      pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/problem+json\");",
+									"      pm.expect(pm.response.headers.get(\"WWW-Authenticate\")).to.eql(\"Bearer\");",
+									"  });"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/catalog/professionals",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"catalog",
+								"professionals"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "3.3 Token inventado",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"  pm.test(\"401 UNAUTHORIZED en problem+json\", () => {",
+									"      pm.response.to.have.status(401);",
+									"      pm.expect(pm.response.json().code).to.eql(\"UNAUTHORIZED\");",
+									"      pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/problem+json\");",
+									"      pm.expect(pm.response.headers.get(\"WWW-Authenticate\")).to.eql(\"Bearer\");",
+									"  });"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "esto-no-es-un-jwt",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/account",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"account"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "3.4 Token alterado",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"  const token = pm.collectionVariables.get(\"token\");",
+									"  pm.request.headers.upsert({ key: \"Authorization\", value: \"Bearer \" + token.slice(0, -3) + \"xyz\" });"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"  pm.test(\"401 UNAUTHORIZED en problem+json\", () => {",
+									"      pm.response.to.have.status(401);",
+									"      pm.expect(pm.response.json().code).to.eql(\"UNAUTHORIZED\");",
+									"      pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/problem+json\");",
+									"      pm.expect(pm.response.headers.get(\"WWW-Authenticate\")).to.eql(\"Bearer\");",
+									"  });"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/account",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"account"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "3.5 userId ajeno ignorado",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"  pm.test(\"devuelve mi cuenta, no la pedida por el cliente\", () => {",
+									"      pm.response.to.have.status(200);",
+									"      pm.expect(pm.response.json().login).to.eql(pm.collectionVariables.get(\"login\"));",
+									"  });"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/account?userId=1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"account"
+							],
+							"query": [
+								{
+									"key": "userId",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "3.6 Registro inválido",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"  pm.test(\"400 con el code esperado\", () => {",
+									"      pm.response.to.have.status(400);",
+									"      pm.expect(pm.response.json().code).to.eql(\"VALIDATION_ERROR\");",
+									"  });"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"login\": \"ab\", \"password\": \"123\", \"email\": \"no-es-email\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/register",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "3.7 Login repetido",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"  pm.test(\"400 con el code esperado\", () => {",
+									"      pm.response.to.have.status(400);",
+									"      pm.expect(pm.response.json().code).to.eql(\"LOGIN_ALREADY_USED\");",
+									"  });"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"login\": \"{{login}}\", \"password\": \"clave-segura\", \"email\": \"otro-{{login}}@example.com\", \"firstName\": \"A\", \"lastName\": \"B\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/register",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "3.8 Email repetido",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.collectionVariables.set(\"otherLogin\", \"otro\" + Date.now());"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"  pm.test(\"400 con el code esperado\", () => {",
+									"      pm.response.to.have.status(400);",
+									"      pm.expect(pm.response.json().code).to.eql(\"EMAIL_ALREADY_USED\");",
+									"  });"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"login\": \"{{otherLogin}}\", \"password\": \"clave-segura\", \"email\": \"{{login}}@example.com\", \"firstName\": \"A\", \"lastName\": \"B\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/register",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "3.9 Contraseña incorrecta",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"  pm.test(\"401 con el code esperado\", () => {",
+									"      pm.response.to.have.status(401);",
+									"      pm.expect(pm.response.json().code).to.eql(\"INVALID_CREDENTIALS\");",
+									"  });"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"username\": \"{{login}}\", \"password\": \"incorrecta\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/authenticate",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"authenticate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "3.10 Usuario inexistente",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"  pm.test(\"401 con el code esperado\", () => {",
+									"      pm.response.to.have.status(401);",
+									"      pm.expect(pm.response.json().code).to.eql(\"INVALID_CREDENTIALS\");",
+									"  });"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"username\": \"fantasma-xyz\", \"password\": \"incorrecta\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/authenticate",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"authenticate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "3.11 Cuerpo que no es JSON",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"  pm.test(\"401 con el code esperado\", () => {",
+									"      pm.response.to.have.status(400);",
+									"      pm.expect(pm.response.json().code).to.eql(\"BAD_REQUEST\");",
+									"  });"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "Esto no es json",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/register",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "3.12 Ruta inexistente",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"404 NOT_FOUND en problem+json para una ruta que no existe\", () => {",
+									"    pm.response.to.have.status(404);",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/problem+json\");",
+									"    const body = pm.response.json();",
+									"    pm.expect(body.status).to.eql(404);",
+									"    pm.expect(body.code).to.eql(\"NOT_FOUND\");",
+									"    pm.expect(body.path).to.eql(\"/api/catalog/no-existe\");",
+									"    pm.expect(body.detail).to.eql(\"El recurso solicitado no existe\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/catalog/no-existe",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"catalog",
+								"no-existe"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "4. Errores",
+			"item": [
+				{
+					"name": "4.1 Profesional inexistente",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"404 NOT_FOUND en problem+json\", () => {",
+									"    pm.response.to.have.status(404);",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/problem+json\");",
+									"    const body = pm.response.json();",
+									"    pm.expect(body.status).to.eql(404);",
+									"    pm.expect(body.code).to.eql(\"NOT_FOUND\");",
+									"    pm.expect(body.path).to.eql(\"/api/catalog/professionals/999999999\");",
+									"    pm.expect(body.detail).to.eql(\"Profesional no encontrado: 999999999\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/catalog/professionals/999999999",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"catalog",
+								"professionals",
+								"999999999"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "4.2 Agendas de un profesional inexistente",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"404 NOT_FOUND en problem+json\", () => {",
+									"    pm.response.to.have.status(404);",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/problem+json\");",
+									"    const body = pm.response.json();",
+									"    pm.expect(body.status).to.eql(404);",
+									"    pm.expect(body.code).to.eql(\"NOT_FOUND\");",
+									"    pm.expect(body.path).to.eql(\"/api/catalog/professionals/999999999/schedules\");",
+									"    pm.expect(body.detail).to.eql(\"Profesional no encontrado: 999999999\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/catalog/professionals/999999999/schedules",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"catalog",
+								"professionals",
+								"999999999",
+								"schedules"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "4.3 Tamaño de página igual a cero",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"400 VALIDATION_ERROR: size fuera de rango\", () => {",
+									"    pm.response.to.have.status(400);",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/problem+json\");",
+									"    const body = pm.response.json();",
+									"    pm.expect(body.code).to.eql(\"VALIDATION_ERROR\");",
+									"    pm.expect(body.path).to.eql(\"/api/catalog/professionals\");",
+									"    pm.expect(body.fieldErrors.size).to.eql(\"debe estar entre 1 y 100\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/catalog/professionals?size=0",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"catalog",
+								"professionals"
+							],
+							"query": [
+								{
+									"key": "size",
+									"value": "0"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "4.4 Tamaño de página mayor al máximo",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"400 VALIDATION_ERROR: size mayor a 100\", () => {",
+									"    pm.response.to.have.status(400);",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/problem+json\");",
+									"    const body = pm.response.json();",
+									"    pm.expect(body.code).to.eql(\"VALIDATION_ERROR\");",
+									"    pm.expect(body.fieldErrors.size).to.eql(\"debe estar entre 1 y 100\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/catalog/professionals?size=101",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"catalog",
+								"professionals"
+							],
+							"query": [
+								{
+									"key": "size",
+									"value": "101"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "4.5 Número de página negativo",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"400 VALIDATION_ERROR: page negativa\", () => {",
+									"    pm.response.to.have.status(400);",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/problem+json\");",
+									"    const body = pm.response.json();",
+									"    pm.expect(body.code).to.eql(\"VALIDATION_ERROR\");",
+									"    pm.expect(body.fieldErrors.page).to.eql(\"debe estar entre 0 y 100000\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/catalog/professionals?page=-1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"catalog",
+								"professionals"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "-1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "4.6 Día de la semana inválido",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"400 VALIDATION_ERROR: dayOfWeek inválido\", () => {",
+									"    pm.response.to.have.status(400);",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/problem+json\");",
+									"    const body = pm.response.json();",
+									"    pm.expect(body.code).to.eql(\"VALIDATION_ERROR\");",
+									"    pm.expect(body.fieldErrors.dayOfWeek).to.eql(\"debe ser un dia de la semana en ingles (MONDAY a SUNDAY)\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/catalog/professionals?dayOfWeek=funday",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"catalog",
+								"professionals"
+							],
+							"query": [
+								{
+									"key": "dayOfWeek",
+									"value": "funday"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "4.7 Día de la semana contradictorio con hasSchedules=false",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"400 VALIDATION_ERROR: dayOfWeek con hasSchedules=false\", () => {",
+									"    pm.response.to.have.status(400);",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/problem+json\");",
+									"    const body = pm.response.json();",
+									"    pm.expect(body.code).to.eql(\"VALIDATION_ERROR\");",
+									"    pm.expect(body.fieldErrors.dayOfWeek).to.eql(\"no se puede combinar con hasSchedules=false\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/catalog/professionals?dayOfWeek=monday&hasSchedules=false",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"catalog",
+								"professionals"
+							],
+							"query": [
+								{
+									"key": "dayOfWeek",
+									"value": "monday"
+								},
+								{
+									"key": "hasSchedules",
+									"value": "false"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "4.8 Filtro enabled con formato incorrecto",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"400 BAD_REQUEST: enabled no es un booleano\", () => {",
+									"    pm.response.to.have.status(400);",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/problem+json\");",
+									"    const body = pm.response.json();",
+									"    pm.expect(body.status).to.eql(400);",
+									"    pm.expect(body.code).to.eql(\"BAD_REQUEST\");",
+									"    pm.expect(body.detail).to.eql(\"El valor de un parametro no tiene el formato esperado\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/catalog/professionals?enabled=quizas",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"catalog",
+								"professionals"
+							],
+							"query": [
+								{
+									"key": "enabled",
+									"value": "quizas"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "4.9 Id de profesional que no es un número",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"400 BAD_REQUEST: el id no es un número\", () => {",
+									"    pm.response.to.have.status(400);",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/problem+json\");",
+									"    const body = pm.response.json();",
+									"    pm.expect(body.status).to.eql(400);",
+									"    pm.expect(body.code).to.eql(\"BAD_REQUEST\");",
+									"    pm.expect(body.path).to.eql(\"/api/catalog/professionals/abc\");",
+									"    pm.expect(body.detail).to.eql(\"El valor de un parametro no tiene el formato esperado\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/catalog/professionals/abc",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"catalog",
+								"professionals",
+								"abc"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "4.10 Método HTTP no permitido",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"405 METHOD_NOT_ALLOWED con la cabecera Allow\", () => {",
+									"    pm.response.to.have.status(405);",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/problem+json\");",
+									"    pm.expect(pm.response.headers.get(\"Allow\")).to.include(\"GET\");",
+									"    const body = pm.response.json();",
+									"    pm.expect(body.status).to.eql(405);",
+									"    pm.expect(body.code).to.eql(\"METHOD_NOT_ALLOWED\");",
+									"    pm.expect(body.detail).to.eql(\"El metodo HTTP no esta permitido para este recurso\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/catalog/professionals/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"catalog",
+								"professionals",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{token}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": ""
+		},
+		{
+			"key": "token",
+			"value": ""
+		},
+		{
+			"key": "login",
+			"value": ""
+		},
+		{
+			"key": "password",
+			"value": ""
+		},
+		{
+			"key": "professionalId",
+			"value": ""
+		},
+		{
+			"key": "categoryId",
+			"value": ""
+		},
+		{
+			"key": "searchName",
+			"value": ""
+		},
+		{
+			"key": "mondayProfessionalId",
+			"value": ""
+		},
+		{
+			"key": "otherLogin",
+			"value": ""
+		}
+	]
+}
