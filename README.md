@@ -28,7 +28,7 @@ Es un caso de estudio académico con datos ficticios.
 | README con requisitos, configuración y pasos para ejecutar | README de cada repositorio de código | Pendiente |
 | Diagrama de arquitectura | diagrams/arquitectura-general.md | Parcial (faltan service-turns y la aplicación) |
 | Contratos entre los dos servicios | specs/contrato-catalogo-para-turnos.md | En elaboración |
-| Modelo de datos de cada servicio | data-model/esquema-catalogo-v2.md | service-catalog listo; service-turns pendiente |
+| Modelo de datos de cada servicio | data-model/esquema-catalogo-v2.md,esquema-catalogo-v2.md,esquema-turnos-v1.md | service-catalog listo; service-turns pendiente |
 | Sincronización completa e incremental | ADR 004, 005 y 008 | Listo |
 | Idempotencia y recuperación | ADR 006 y 008 | Listo para service-catalog; service-turns pendiente |
 | Seguridad, autenticación y autorización | ADR 009 a 015 | Listo para service-catalog; CORS y HTTPS pendientes |
@@ -54,7 +54,9 @@ Es un caso de estudio académico con datos ficticios.
 | 014 | Errores de la API en problem+json con un handler global |
 | 015 | Alcance de la seguridad de la API |
 | 016 | Definición del filtro de disponibilidad del catálogo |
-| 017 | API de consulta del catálogo local |
+| 017 | API de consulta del catálogo local|
+| 018 | Maquina de estados de la reserva                                  |
+| 019  | Modelo de datos de service-turns                                  |
 
 ## Plan de trabajo
 El calendario, los hitos y el avance de cada servicio están en [plan/plan-de-trabajo.md].

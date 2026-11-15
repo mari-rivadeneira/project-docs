@@ -37,12 +37,12 @@ La app KMP Android no es requerida para regularizar: se desarrolla para el exame
 - [x] Reconciliación al arrancar y periódica
 - [x] Usuarios finales, autenticación y JWT
 - [x] API de consulta y filtros locales
-- [ ] Empaquetado (Dockerfile) y README
+- [x] Empaquetado (Dockerfile) y README
 
 ## service-turns
 
-- [ ] 1. Base del servicio: Compose (PostgreSQL propio y Kafka local), dependencias, estructura hexagonal
-- [ ] 2. Dominio y migraciones: proceso de reserva y reserva con dueño, máquina de estados con estados finales que no retroceden, eventos procesados
+- [x] 1. Base del servicio: Compose (PostgreSQL propio y Kafka local), dependencias, estructura hexagonal
+- [x] 2. Dominio y migraciones: proceso de reserva y reserva con dueño, máquina de estados con estados finales que no retroceden, eventos procesados
 - [ ] 3. Persistencia JPA y tests de integración
 - [ ] 4. Clientes: REST de la cátedra (holds, confirmación, ocupaciones, reservas, cancelación) y de service-catalog
 - [ ] 5. Seguridad: JWT de usuario, comunicación entre servicios, autorización por dueño
