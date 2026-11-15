@@ -57,6 +57,7 @@ Es un caso de estudio académico con datos ficticios.
 | 017 | API de consulta del catálogo local|
 | 018 | Maquina de estados de la reserva                                  |
 | 019  | Modelo de datos de service-turns                                  |
+| 020  | Persistencia de service-turns                                                                  |
 
 ## Plan de trabajo
 El calendario, los hitos y el avance de cada servicio están en [plan/plan-de-trabajo.md].
