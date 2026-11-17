@@ -1,10 +1,9 @@
 # Contrato: service-catalog consumido por service-turns
 
-Estado: en elaboración (se confirma al implementar el consumo en service-turns)
+Estado: vigente
 
 ## Autenticación
-Todas las operaciones exigen la cabecera `Authorization: Bearer <JWT>`. Se prevé que service-turns reenvíe el JWT del
-usuario, emitido por service-catalog y validado con el secreto compartido (ADR 012). Sin token, o con uno inválido o
+Todas las operaciones exigen la cabecera `Authorization: Bearer <JWT>`. service-turns reenvía el JWT del usuario, emitido por service-catalog y validado con el secreto compartido (ADR 012 y 021). Sin token, o con uno inválido o
 vencido, la respuesta es 401 con code UNAUTHORIZED.
 
 ## Operaciones
