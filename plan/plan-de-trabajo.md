@@ -45,7 +45,7 @@ La app KMP Android no es requerida para regularizar: se desarrolla para el exame
 - [x] 2. Dominio y migraciones: proceso de reserva y reserva con dueño, máquina de estados con estados finales que no retroceden, eventos procesados
 - [x] 3. Persistencia JPA y tests de integración
 - [x] 4. Clientes: REST de la cátedra (holds, confirmación, ocupaciones, reservas, cancelación) y de service-catalog
-- [ ] 5. Seguridad: JWT de usuario, comunicación entre servicios, autorización por dueño
+- [x] 5. Seguridad: JWT de usuario, comunicación entre servicios, autorización por dueño
 - [ ] 6. Disponibilidad: horarios semanales menos ocupaciones
 - [ ] 7. Iniciar reserva: hold, persistencia del proceso y confirmación inicial
 - [ ] 8. Kafka: consumo de eventos de acciones (idempotente) y envío del teléfono

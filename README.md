@@ -5,7 +5,7 @@ Este repositorio centraliza la documentación técnica, arquitectónica y de dis
 ingeniería, los diagramas, los modelos de datos, los contratos entre servicios, el plan de trabajo y las evidencias.
 Es un caso de estudio académico con datos ficticios.
 
-Última actualización: 16/11/2026
+Última actualización: 18/11/2026
 
 ## Repositorios de código
 - service-catalog: https://github.com/mari-rivadeneira/service-catalog
@@ -32,7 +32,7 @@ Es un caso de estudio académico con datos ficticios.
 | Sincronización completa e incremental | ADR 004, 005 y 008 | Listo |
 | Máquina de estados local de las reservas | ADR 018, diagrams/maquina-de-estados-reserva.md | Listo |
 | Idempotencia y recuperación | ADR 006, 008 y 020 | service-catalog listo; service-turns en curso (falta el consumo de eventos y la recuperación) |
-| Seguridad, autenticación y autorización | ADR 009 a 015 y 021 | service-catalog listo; service-turns pendiente |
+| Seguridad, autenticación y autorización | ADR 009 a 015, 021 y 022 | service-catalog listo; service-turns con la base lista (faltan los endpoints)|
 | Instrucciones para ejecutar las pruebas | README de cada repositorio de código | service-catalog listo; service-turns y app-kmp pendientes |
 
 ## Índice de decisiones de arquitectura
@@ -60,6 +60,7 @@ Es un caso de estudio académico con datos ficticios.
 | 019 | Modelo de datos de service-turns |
 | 020 | Persistencia de service-turns: bloqueo optimista y registro atómico de eventos |
 | 021 | Clientes REST: autenticación entre servicios, tiempos de espera y resultado incierto |
+| 022 | Seguridad de service-turns: validación del JWT, identidad desde el token y autorización por dueño                                                                                   |
 
 ## Plan de trabajo
 El calendario, los hitos y el avance de cada servicio están en [plan/plan-de-trabajo.md](plan/plan-de-trabajo.md).
