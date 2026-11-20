@@ -3,7 +3,7 @@
 Objetivo: tener **service-catalog** y **service-turns** funcionando para regularizar (límite: 30/11/2026).
 La app KMP Android no es requerida para regularizar: se desarrolla para el examen final.
 
-Última actualización: 08/11/2026
+Última actualización: 20/11/2026
 
 ## Calendario
 
@@ -46,7 +46,7 @@ La app KMP Android no es requerida para regularizar: se desarrolla para el exame
 - [x] 3. Persistencia JPA y tests de integración
 - [x] 4. Clientes: REST de la cátedra (holds, confirmación, ocupaciones, reservas, cancelación) y de service-catalog
 - [x] 5. Seguridad: JWT de usuario, comunicación entre servicios, autorización por dueño
-- [ ] 6. Disponibilidad: horarios semanales menos ocupaciones
+- [x] 6. Disponibilidad: horarios semanales menos ocupaciones
 - [ ] 7. Iniciar reserva: hold, persistencia del proceso y confirmación inicial
 - [ ] 8. Kafka: consumo de eventos de acciones (idempotente) y envío del teléfono
 - [ ] 9. Mis reservas, consulta del proceso y cancelación

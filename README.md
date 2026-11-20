@@ -5,7 +5,7 @@ Este repositorio centraliza la documentación técnica, arquitectónica y de dis
 ingeniería, los diagramas, los modelos de datos, los contratos entre servicios, el plan de trabajo y las evidencias.
 Es un caso de estudio académico con datos ficticios.
 
-Última actualización: 18/11/2026
+Última actualización: 20/11/2026
 
 ## Repositorios de código
 - service-catalog: https://github.com/mari-rivadeneira/service-catalog
@@ -61,6 +61,7 @@ Es un caso de estudio académico con datos ficticios.
 | 020 | Persistencia de service-turns: bloqueo optimista y registro atómico de eventos |
 | 021 | Clientes REST: autenticación entre servicios, tiempos de espera y resultado incierto |
 | 022 | Seguridad de service-turns: validación del JWT, identidad desde el token y autorización por dueño                                                                                   |
+| 023 | Cálculo de la disponibilidad de turnos                                                                                                                                                                                 |
 
 ## Plan de trabajo
 El calendario, los hitos y el avance de cada servicio están en [plan/plan-de-trabajo.md](plan/plan-de-trabajo.md).
