@@ -48,7 +48,7 @@ La app KMP Android no es requerida para regularizar: se desarrolla para el exame
 - [x] 5. Seguridad: JWT de usuario, comunicación entre servicios, autorización por dueño
 - [x] 6. Disponibilidad: horarios semanales menos ocupaciones
 - [x] 7. Iniciar reserva: hold, persistencia del proceso y confirmación inicial
-- [ ] 8. Kafka: consumo de eventos de acciones (idempotente) y envío del teléfono
+- [x] 8. Kafka: consumo de eventos de acciones (idempotente) y envío del teléfono
 - [ ] 9. Mis reservas, consulta del proceso y cancelación
 - [ ] 10. Recuperación: expiración de procesos y reinicio con pendientes
 
