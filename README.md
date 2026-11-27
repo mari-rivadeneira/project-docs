@@ -5,7 +5,7 @@ Este repositorio centraliza la documentación técnica, arquitectónica y de dis
 ingeniería, los diagramas, los modelos de datos, los contratos entre servicios, el plan de trabajo y las evidencias.
 Es un caso de estudio académico con datos ficticios.
 
-Última actualización: 23/11/2026
+Última actualización: 27/11/2026
 
 ## Repositorios de código
 - service-catalog: https://github.com/mari-rivadeneira/service-catalog
@@ -64,6 +64,7 @@ Es un caso de estudio académico con datos ficticios.
 | 023 | Cálculo de la disponibilidad de turnos                                                                                                                                                                                 |
 | 024 | Inicio de la reserva: escritura previa, resultado incierto e idempotencia                                                                                                                                                                                                                       |
 | 025  | Eventos de la cátedra y envío del teléfono por Kafka                                                                                                                                                                                                                                                                                                |
+| 026  | Consulta, cancelación y reconciliación de reservas                                                                                                                                                                                                                                                                                                                                                   |
 
 ## Plan de trabajo
 El calendario, los hitos y el avance de cada servicio están en [plan/plan-de-trabajo.md](plan/plan-de-trabajo.md).
